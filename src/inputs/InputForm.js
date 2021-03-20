@@ -7,7 +7,7 @@ function InputForm({searchParameters, setSearchParameters, getResults}) {
     const [fromError, setFromError] = useState('');
 
     const validateAndSetYear = (value, valueSetter) => {
-        if (value === '') {
+        if (value.trim() === '') {
             valueSetter('');
         } else if ((Number(value) == value)) {
             valueSetter(parseInt(value));
@@ -23,7 +23,7 @@ function InputForm({searchParameters, setSearchParameters, getResults}) {
     const validateAndSubmitForm = () => {
         resetErrors();
 
-        if (searchParameters['searchTerm'] === "") {
+        if (searchParameters['searchTerm'].trim() === "") {
             setSearchError("Please enter a search term")
             return;
         } else if (!searchParameters['from']) {

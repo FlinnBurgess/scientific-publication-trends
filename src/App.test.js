@@ -37,22 +37,22 @@ describe('Search Form', () => {
 
   it('shows error message when from year is empty', async () => {
     userEvent.type(searchInput, 'search');
-    fireEvent.change(fromYearInput, {target: {value: ''}});
+    userEvent.type(fromYearInput, '{backspace}{backspace}{backspace}{backspace}')
     userEvent.click(screen.getByText('Get Results'));
     await waitFor(() => expect(screen.getByText("Please enter a FROM year")).toBeVisible());
   });
 
   it('shows error message when to year is empty', async () => {
     userEvent.type(searchInput, 'search');
-    fireEvent.change(toYearInput, {target: {value: ''}});
+    userEvent.type(toYearInput, '{backspace}{backspace}{backspace}{backspace}')
     userEvent.click(screen.getByText('Get Results'));
     await waitFor(() => expect(screen.getByText("Please enter a TO year")).toBeVisible());
   });
 
   it('shows error message when to year is less than from year', () => {
     userEvent.type(searchInput, 'search');
-    fireEvent.change(fromYearInput, {target: {value: '2020'}});
-    fireEvent.change(toYearInput, {target: {value: '2000'}});
+    userEvent.type(fromYearInput, '{backspace}{backspace}{backspace}{backspace}2020')
+    userEvent.type(toYearInput, '{backspace}{backspace}{backspace}{backspace}1980')
     userEvent.click(screen.getByText('Get Results'));
     expect(screen.getByText("TO must come after FROM")).toBeVisible();
   });
