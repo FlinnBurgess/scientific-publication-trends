@@ -1,7 +1,7 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import {rest} from 'msw'
+import {setupServer} from 'msw/node'
 import App from './App';
 
 let textInputs;
@@ -13,9 +13,10 @@ const mockCount = 100;
 const mockWebEnv = "ABC123";
 const mockQueryKey = 1;
 const mockResponse = `<eSearchResult><Count>${mockCount}</Count><QueryKey>${mockQueryKey}</QueryKey><WebEnv>${mockWebEnv}</WebEnv></eSearchResult>`
+let container;
 
 beforeEach(() => {
-  render(<App/>);
+  container = render(<App/>).container;
   textInputs = screen.getAllByRole('textbox');
   searchInput = textInputs[0];
   fromYearInput = textInputs[1];
@@ -59,23 +60,29 @@ describe('Search Form', () => {
 });
 
 describe('App', () => {
-  it('displays chart when valid search parameters given', async () => {
-    const searchTerm = 'search';
+  let mockServer;
+
+  beforeEach(() => {
     const apiEndpoint = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi`;
-    const mockServer = setupServer(
+    mockServer = setupServer(
         rest.get(apiEndpoint, (req, res, ctx) => {
           return res(ctx.xml(mockResponse))
         })
     )
     mockServer.listen();
+  });
+
+  afterEach(() => {
+    mockServer.close();
+  });
+
+  it('displays chart when valid search parameters given', async () => {
 
     expect(screen.queryByTestId("chart-container")).toBeNull();
 
-    userEvent.type(searchInput, searchTerm);
+    userEvent.type(searchInput, 'search');
     userEvent.click(screen.getByText('Get Results'));
 
     await waitFor(() => expect(screen.getByTestId("chart-container")).toBeVisible());
-
-    mockServer.close();
   });
 });
