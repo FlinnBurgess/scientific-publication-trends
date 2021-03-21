@@ -41,11 +41,12 @@ function DistributionMap({mapData}) {
         const reducer = (acc, current) => acc + `|${current['lat']},${current['lng']}`;
         const markerInfo = countryCoordinateList.reduce(reducer, '');
 
-        return `https://maps.googleapis.com/maps/api/staticmap?size=500x400&markers=${markerInfo}&key=${googleApiKey}`
+        return `https://maps.googleapis.com/maps/api/staticmap?size=1000x600&markers=${markerInfo}&key=${googleApiKey}`
     };
 
     return (
         <div className={"Map-container"} data-testid={"map-container"}>
+            <h3>Global Distribution of the Top 100 Results</h3>
             {loading ? <CircularProgress/> :
                 <img src={generateGmapsUrl()} alt={"Google map of publication countries"}/>}
         </div>

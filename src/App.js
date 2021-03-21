@@ -42,12 +42,15 @@ function App() {
 
     return (
         <div className="App">
+            <h1>Welcome to Scientific Publication Trends</h1>
+            <h2>Search below to see how many publications have been made on a topic on a yearly basis</h2>
             <InputForm searchParameters={searchParameters} setSearchParameters={setSearchParameters}
                        getResults={getResults}/>
 
             {
                 resultSet.length > 0 &&
                 <div className="Chart-container" data-testid={"chart-container"}>
+                    <h3>{"Click a bar to see in which countries the first 100 results were published for that year"}</h3>
                     <BarChart width={1000} height={600} data={resultSet}
                               margin={{top: 5, right: 30, left: 20, bottom: 5}}>
                         <XAxis dataKey={"year"}/>
